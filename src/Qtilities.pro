@@ -11,13 +11,28 @@
 
 TARGET      = Qtilities
 TEMPLATE    = subdirs
-CONFIG     += ordered
+
 SUBDIRS    += Logging
 SUBDIRS    += Core
 SUBDIRS    += CoreGui
 SUBDIRS    += ExtensionSystem
 SUBDIRS    += ProjectManagement
 SUBDIRS    += Testing
+
+Core.depends              = Logging
+CoreGui.depends           = Logging \
+                            Core
+ExtensionSystem.depends   = Logging \
+                            Core \
+                            CoreGui
+ProjectManagement.depends = Logging \
+                            Core \
+                            CoreGui
+Testing.depends           = Logging \
+                            Core \
+                            CoreGui \
+                            ExtensionSystem \
+                            ProjectManagement
 
 TRANSLATIONS = qtilities.ts
 

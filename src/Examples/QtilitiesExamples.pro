@@ -11,7 +11,6 @@
 
 TARGET      = Qtilities
 TEMPLATE    = subdirs
-CONFIG     += ordered
 
 # Example Applications:
 SUBDIRS    += ConsoleLogging
