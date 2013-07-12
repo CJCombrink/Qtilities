@@ -67,13 +67,13 @@ namespace Qtilities {
                 void setVersionMinor(int minor);
 
                 // --------------------------------
-                // IObjectBase Implemenation
+                // IObjectBase Implementation
                 // --------------------------------
                 QObject* objectBase() { return this; }
                 const QObject* objectBase() const { return this; }
 
                 // --------------------------------
-                // IExportable Implemenation
+                // IExportable Implementation
                 // --------------------------------
                 ExportModeFlags supportedFormats() const;
                 InstanceFactoryInfo instanceFactoryInfo() const;
@@ -81,7 +81,7 @@ namespace Qtilities {
                 IExportable::ExportResultFlags importXml(QDomDocument* doc, QDomElement* object_node, QList<QPointer<QObject> >& import_list);
 
                 // --------------------------------
-                // Factory Interface Implemenation
+                // Factory Interface Implementation
                 // --------------------------------
                 static FactoryItem<QObject, VersionDetails> factory;
 
