@@ -363,3 +363,58 @@ bool FileUtils::makeLocalCopyOfResource(const QString &resource_path, const QStr
 
     return true;
 }
+
+QString FileUtils::toUnixPath(const QString &path) {
+    #ifdef Q_OS_WIN
+    return QDir::fromNativeSeparators(QDir::cleanPath(path));
+    #else
+    return QDir::toNativeSeparators(QDir::cleanPath(path));
+    #endif
+}
+
+bool FileUtils::writeTextFile(const QString &file_path, const QString &file_contents, QString *errorMsg) {
+    QFile file(file_path);
+    if (!file.open(QFile::WriteOnly)) {
+        if (errorMsg)
+            *errorMsg = QObject::tr("Failed to open output file for writing at: %1").arg(file.fileName());
+        return false;
+    }
+
+    if (file.write(file_contents.toUtf8()) == (qint64) -1) {
+        if (errorMsg)
+            *errorMsg = QObject::tr("Failed to write to file at: %1").arg(file.fileName());
+        file.close();
+        file.remove();
+        return false;
+    }
+    file.close();
+    return true;
+}
+
+QString FileUtils::readTextFile(const QString &file_path, bool *ok, QString *errorMsg) {
+    QFileInfo fi(file_path);
+    if (!fi.exists()) {
+        if (errorMsg)
+            *errorMsg = tr("File does not exist. Expected at: %1").arg(file_path);
+        if (ok)
+            *ok = false;
+        return QString();
+    }
+
+    QFile file(file_path);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        if (errorMsg)
+            *errorMsg = tr("File cannot be opened as a text file. File path: %1").arg(file_path);
+        if (ok)
+            *ok = false;
+        return QString();
+    }
+
+    QString contents = QString(file.readAll());
+    file.close();
+
+    if (ok)
+        *ok = true;
+    return contents;
+
+}
